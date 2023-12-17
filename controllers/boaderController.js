@@ -1,5 +1,5 @@
+const { json } = require("express");
 const asyncHandler = require("express-async-handler");
-
 /*
  @desc GET request
  @desc GET all the request
@@ -28,6 +28,9 @@ const getBoarder = asyncHandler(async (req, res) => {
 @access PRIVATE 
 */
 const addBoarder = asyncHandler(async (req, res) => {
+  if (!req.body) {
+    res.status(400);
+  }
   res.status(201).json({
     message: "New Boarder Added",
   });
