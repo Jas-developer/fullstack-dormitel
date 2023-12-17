@@ -4,6 +4,8 @@ const port = process.env.PORT || 5000;
 const router = require("./routes/boarderRoutes");
 const app = express();
 const { errorHandler } = require("./middleware/errorHandler");
+const dbConnect = require("./database/dbConnection");
+dbConnect();
 app.use(express.json());
 app.use(
   express.urlencoded({
