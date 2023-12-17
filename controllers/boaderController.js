@@ -24,7 +24,7 @@ const getBoarder = asyncHandler(async (req, res) => {
     const boarder = await Boarders.findById(req.params.id);
     if (!boarder) {
       return res.status(404).json({
-        error: "Unable to get the boarder with the id",
+        error: `Unable to get the boarder with the id of ${req.params.id}`,
       });
     }
 
@@ -91,51 +91,64 @@ const addBoarder = asyncHandler(async (req, res) => {
 @desc UPDATE a data/modify a data to the server
 @access PRIVATE
 */
+
 const updateBoarder = asyncHandler(async (req, res) => {
   try {
     const { name, amount, room, due, starting } = req.body;
-    const updateFields = {};
+    const updatedData = {};
 
-    if (name) updateFields.name = name;
-    if (amount) updateFields.amount = amount;
-    if (room) updateFields.room = room;
-    if (due) updateFields.due = due;
-    if (starting) updateFields.starting = starting;
+    if (name) updatedData.name = name;
+    if (amount) updatedData.amount = amount;
+    if (room) updatedData.room = room;
+    if (due) updatedData.due = due;
+    if (starting) updatedData.starting = starting;
 
     const boarder = await Boarders.findById(req.params.id);
     if (!boarder) {
       return res.status(404).json({
-        error: "Boarder does not exist",
+        error: "Boarder not found",
       });
     }
 
     const updatedBoarder = await Boarders.findByIdAndUpdate(
       req.params.id,
-      updateFields,
-      { new: true }
+      updatedData,
+      {
+        new: true,
+      }
     );
 
     return res.status(201).json({
-      message: "Boarder updated",
+      message: "Successfully updated the boarder",
       boarder: updatedBoarder,
     });
   } catch (error) {
     return res.status(500).json({
-      error: "Server Error",
+      error: "Server error",
     });
   }
 });
-
 /*
 @desc DELETE request
 @desc delete/remove a specific data from the server
 @access PRIVATE
 */
 const deleteBoarder = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    message: `Boarder has been deleted`,
-    id: `${req.params.id}`,
-  });
+  try {
+    const boarder = await Boarders.findById(req.params.id);
+    if (boarder) {
+      const deleteBoarder = await Boarders.findByIdAndDelete(req.params.id);
+      if (deleteBoarder) {
+        return res.status(200).json({
+          message: "Boarder has been deleted",
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Server error",
+    });
+  }
 });
 module.exports = {
   getBoarders,
