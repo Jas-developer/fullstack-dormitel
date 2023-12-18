@@ -4,6 +4,11 @@ const { Schema, model } = mongoose;
 
 const boardersSchema = new Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     name: {
       type: String,
       required: [true, "Please enter a name"],
