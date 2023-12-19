@@ -9,6 +9,7 @@ const dbConnect = async () => {
     }
   } catch (error) {
     console.log(error);
+    throw new Error("Unable to connect with the server");
   }
 };
 
