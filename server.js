@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const port = process.env.PORT || 5000;
 const router = require("./routes/boarderRoutes");
+const cors = require("cors");
 const app = express();
 const { errorHandler } = require("./middleware/errorHandler");
 const dbConnect = require("./database/dbConnection");
@@ -12,7 +13,7 @@ app.use(
     extended: false,
   })
 );
-
+app.use(cors());
 app.use("/api/", router);
 app.use("/api/", require("./routes/userRoutes"));
 app.listen(port, () => console.log(`Server started on port ${port}`));
